@@ -1,0 +1,58 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  lint-and-test:
+    runs-on: ubuntu-latest
+
+    services:
+      db:
+        image: pgvector/pgvector:pg16
+        env:
+          POSTGRES_DB: ops_briefing_test
+          POSTGRES_USER: ops
+          POSTGRES_PASSWORD: ops_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v3
+        with:
+          version: "latest"
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: uv sync --all-groups
+
+      - name: Lint (ruff check)
+        run: uv run ruff check src/ tests/
+
+      - name: Format check (ruff format)
+        run: uv run ruff format --check src/ tests/
+
+      - name: Run tests
+        env:
+          DATABASE_URL: postgresql+asyncpg://ops:ops_test@localhost:5432/ops_briefing_test
+          LLM_PROVIDER: openai
+          LLM_MODEL: gpt-4o-mini
+          EMBEDDING_PROVIDER: openai
+          EMBEDDING_DIMENSION: "1536"
+          LOG_LEVEL: WARNING
+        run: uv run pytest tests/ -v; exit_code=$?; [ $exit_code -eq 5 ] && exit 0 || exit $exit_code
