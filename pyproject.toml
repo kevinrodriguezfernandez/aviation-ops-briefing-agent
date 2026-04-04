@@ -1,0 +1,54 @@
+[project]
+name = "aviation-ops-briefing-agent"
+version = "0.1.0"
+description = "Aviation operations briefing agent powered by LangGraph and LLMs"
+readme = "README.md"
+requires-python = ">=3.12"
+maintainers = [{ email = "kevin_odr@hotmail.com" }]
+dependencies = [
+    "langgraph>=0.2",
+    "langchain>=0.3",
+    "langchain-openai>=0.2",
+    "langchain-huggingface>=0.1",
+    "langchain-community>=0.3",
+    "langsmith>=0.1",
+    "openai>=1.0",
+    "fastapi>=0.115",
+    "uvicorn[standard]>=0.30",
+    "sqlalchemy>=2.0",
+    "asyncpg>=0.29",
+    "pgvector>=0.3",
+    "pydantic>=2.0",
+    "pydantic-settings>=2.0",
+    "structlog>=24.0",
+    "slowapi>=0.1",
+    "jinja2>=3.1",
+    "httpx>=0.27",
+    "datasets>=2.0",
+    "huggingface-hub>=0.24",
+]
+
+[dependency-groups]
+dev = [
+    "ruff>=0.6",
+    "pytest>=8.0",
+    "pytest-asyncio>=0.24",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
