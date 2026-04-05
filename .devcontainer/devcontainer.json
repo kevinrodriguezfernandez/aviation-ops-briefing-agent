@@ -1,0 +1,39 @@
+{
+  "name": "aviation-ops-briefing-agent",
+  "dockerComposeFile": "docker-compose.dev.yml",
+  "service": "devcontainer",
+  "workspaceFolder": "/workspaces/aviation-ops-briefing-agent",
+  "features": {
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {
+      "moby": false
+    }
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-python.python",
+        "ms-python.vscode-pylance",
+        "charliermarsh.ruff",
+        "ms-azuretools.vscode-docker",
+        "GitHub.copilot",
+        "GitHub.copilot-chat"
+      ],
+      "settings": {
+        "python.defaultInterpreterPath": ".venv/bin/python",
+        "python.terminal.activateEnvironment": true,
+        "python.testing.pytestEnabled": true,
+        "python.testing.pytestArgs": ["tests"],
+        "[python]": {
+          "editor.defaultFormatter": "charliermarsh.ruff",
+          "editor.formatOnSave": true
+        }
+      }
+    }
+  },
+  "postCreateCommand": "uv sync",
+  "forwardPorts": [8000, 5432],
+  "remoteEnv": {
+    "PYTHONPATH": "${containerWorkspaceFolder}/src",
+    "DATABASE_URL": "postgresql+asyncpg://ops:ops_dev@db:5432/ops_briefing"
+  }
+}
