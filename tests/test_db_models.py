@@ -12,8 +12,8 @@ async def setup_db():
     await init_db()
     yield
     async with engine.begin() as conn:
-        await conn.run_sync(lambda c: c.exec_driver_sql("DROP SCHEMA public CASCADE"))
-        await conn.run_sync(lambda c: c.exec_driver_sql("CREATE SCHEMA public"))
+        await conn.execute(text("DROP SCHEMA public CASCADE"))
+        await conn.execute(text("CREATE SCHEMA public"))
 
 
 async def test_vector_extension_enabled():
