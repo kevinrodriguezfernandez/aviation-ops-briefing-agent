@@ -317,6 +317,10 @@ These apply to **every** contributor — human or AI, regardless of tool:
 7. **Report after meaningful work.** Update coordination files per the completion protocol (§7).
 8. **Module imports flow downward.** `db` → `data` → `core`/`llm`/`tools` → `agents` → `api`. Never import from a higher-phase module.
 
+## 13. Branch Naming Strategy
+
+- Use this branch format for feature work: `feat/<num_issue>-<issue-description>`
+
 ---
 
 ## 12. Security & Secrets

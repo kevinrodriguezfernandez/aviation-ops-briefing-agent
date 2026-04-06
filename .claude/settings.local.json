@@ -5,7 +5,8 @@
       "Bash(wsl.exe --version)",
       "Bash(wsl.exe -d Ubuntu-22.04 rm '/home/kev/aviation-ops-briefing-agent/main.py')",
       "Bash(git add:*)",
-      "Bash(git commit:*)"
+      "Bash(git commit:*)",
+      "Bash(gh issue:*)"
     ],
     "deny": [
       "Read(**/.env*)",
@@ -18,13 +19,7 @@
       "Read(**/secrets.json)",
       "Read(**/.netrc)",
       "Read(**/.pypirc)",
-      "Read(**/.git-credentials)",
-      "Bash(cat:*.env*)",
-      "Bash(cat:*.pem)",
-      "Bash(cat:*.key)",
-      "Bash(cat:*secrets*)",
-      "Bash(cat:*id_rsa*)",
-      "Bash(cat:*id_ed25519*)"
+      "Read(**/.git-credentials)"
     ]
   }
 }
