@@ -1,4 +1,3 @@
-import os
 import uuid
 from datetime import datetime
 
@@ -7,7 +6,9 @@ from sqlalchemy import DateTime, Float, ForeignKey, Integer, String, Text, func
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
 
-_EMBEDDING_DIMENSION = int(os.getenv("EMBEDDING_DIMENSION", "1536"))
+from src.core.config import get_settings
+
+_EMBEDDING_DIMENSION = get_settings().embedding_dimension
 
 
 class Base(DeclarativeBase):

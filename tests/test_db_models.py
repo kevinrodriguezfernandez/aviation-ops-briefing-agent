@@ -6,9 +6,11 @@ import pytest
 from sqlalchemy import inspect, text
 from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine
 
+from src.core.config import get_settings
 from src.db.models import Airport, Base, Flight, Notam, Sop
 
 DATABASE_URL = os.environ["DATABASE_URL"]
+EMBEDDING_DIMENSION = get_settings().embedding_dimension
 
 
 @pytest.fixture()
@@ -72,7 +74,7 @@ async def test_notam_with_embedding(db_engine, session):
     notam = Notam(
         notam_id="KJFK/NOTAM001",
         raw_text="Runway 13R/31L closed for maintenance.",
-        embedding=[0.1] * 1536,
+        embedding=[0.1] * EMBEDDING_DIMENSION,
     )
     session.add(notam)
     await session.commit()
@@ -81,7 +83,7 @@ async def test_notam_with_embedding(db_engine, session):
     result = await session.get(Notam, notam.id)
     assert result is not None
     assert result.notam_id == "KJFK/NOTAM001"
-    assert len(result.embedding) == 1536
+    assert len(result.embedding) == EMBEDDING_DIMENSION
 
 
 async def test_sop_with_embedding(db_engine, session):
@@ -89,7 +91,7 @@ async def test_sop_with_embedding(db_engine, session):
         title="Departure Briefing SOP",
         content="Verify weather minima before departure.",
         category="departure",
-        embedding=[0.2] * 1536,
+        embedding=[0.2] * EMBEDDING_DIMENSION,
     )
     session.add(sop)
     await session.commit()
@@ -98,4 +100,4 @@ async def test_sop_with_embedding(db_engine, session):
     result = await session.get(Sop, sop.id)
     assert result is not None
     assert result.title == "Departure Briefing SOP"
-    assert len(result.embedding) == 1536
+    assert len(result.embedding) == EMBEDDING_DIMENSION

@@ -30,9 +30,11 @@
       }
     }
   },
-  "postCreateCommand": "uv sync",
+  "updateContentCommand": "uv sync --all-groups",
+  "postCreateCommand": "uv sync --all-groups",
   "forwardPorts": [8000, 5432],
   "remoteEnv": {
+    "UV_PROJECT_ENVIRONMENT": "${containerWorkspaceFolder}/.venv",
     "PYTHONPATH": "${containerWorkspaceFolder}/src",
     "DATABASE_URL": "postgresql+asyncpg://ops:ops_dev@db:5432/ops_briefing"
   }

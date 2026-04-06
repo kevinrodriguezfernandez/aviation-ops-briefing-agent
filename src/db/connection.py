@@ -1,11 +1,16 @@
-import os
-
 from sqlalchemy import text
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
 
+from src.core.config import get_settings
 from src.db.models import Base
 
-DATABASE_URL = os.environ["DATABASE_URL"]
+settings = get_settings()
+
+if settings.database_url is None:
+    msg = "DATABASE_URL must be set before importing src.db.connection"
+    raise RuntimeError(msg)
+
+DATABASE_URL = settings.database_url
 
 engine = create_async_engine(DATABASE_URL, echo=False)
 
